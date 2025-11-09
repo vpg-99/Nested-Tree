@@ -87,12 +87,12 @@
   align-items: center;
   gap: 10px;
   padding: 8px;
-  background: lightblue
+  background: lightblue;
   border-radius: 3px;
 }
 
 .data-field label {
-  font-weight: 600;
+  font-weight: 500;
   color: #1a1a1a;
   white-space: nowrap;
 }
