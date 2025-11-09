@@ -5,16 +5,12 @@ function TagView({ node, onUpdate }) {
   const [isExpanded, setIsExpanded] = useState(false);
   const [isEditingName, setIsEditingName] = useState(false);
   const [editedName, setEditedName] = useState(node.name);
+  const [editedData, setEditedData] = useState(node.data);
+  const [isEditingData, setIsEditingData] = useState(false);
 
   // Toggle expand/collapse
   const toggleExpand = () => {
     setIsExpanded(!isExpanded);
-  };
-
-  // Handle data field changes
-  const handleDataChange = (e) => {
-    const updatedNode = { ...node, data: e.target.value };
-    onUpdate(updatedNode);
   };
 
   // Handle adding a new child
@@ -75,6 +71,28 @@ function TagView({ node, onUpdate }) {
     setEditedName(node.name);
   };
 
+  // Handle data field changes
+  const handleDataChange = (e) => {
+    setEditedData(e.target.value);
+  };
+  
+  const handleDataKeyDown = (e) => {
+    if (e.key === "Enter") {
+      const updatedNode = { ...node, data: editedData };
+      onUpdate(updatedNode);
+      setIsEditingData(false);
+    } else if (e.key === "Escape") {
+      setIsEditingData(false);
+      setEditedData(node.data);
+    }
+  };
+
+  const handleDataBlur = () => {
+    setIsEditingData(false);
+    setEditedData(node.data);
+  };
+
+
   return (
     <div className="tag-view">
       <div className="tag-header">
@@ -112,9 +130,11 @@ function TagView({ node, onUpdate }) {
               <label>Data</label>
               <input
                 type="text"
-                value={node.data}
-                onChange={handleDataChange}
                 className="data-input"
+                value={editedData}
+                onChange={handleDataChange}
+                onKeyDown={handleDataKeyDown}
+                onBlur={handleDataBlur}
               />
             </div>
           )}
